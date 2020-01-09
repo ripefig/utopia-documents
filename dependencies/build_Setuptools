@@ -1,0 +1,35 @@
+#! /bin/bash
+
+source "buildutils.sh"
+
+# PACKAGE ####################################################################
+
+PACKAGE=Setuptools
+DEPENDENCIES="Python"
+
+# SETUP ######################################################################
+
+set -e
+cd `dirname "$0"`
+PREFIX=`pwd`
+
+if [ -e ".${PACKAGE}-BUILT" ]; then
+    exit 0
+fi
+
+# DEPENDENCIES ###############################################################
+
+build_deps $DEPENDENCIES
+
+# BUILD STEPS ###############################################################
+
+echo "Installing ${PACKAGE} ..."
+PATH=${PREFIX}/bin:$PATH
+curl https://bootstrap.pypa.io/ez_setup.py | python
+
+##############################################################################
+
+cd "${PREFIX}"
+touch ".${PACKAGE}-BUILT"
+
+##############################################################################
